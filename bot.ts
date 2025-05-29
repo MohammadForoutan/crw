@@ -113,7 +113,11 @@ async function scheduledTask(): Promise<void> {
             results
               .filter((result) => result.found)
               .map((result) => result.data)
-              .join("\n")
+              .join("\n") +
+            "\n\n" +
+            results
+              .filter((result) => result.found)
+              .map((result) => result.site + "\n")
         );
       } catch (error) {
         logger.error(
