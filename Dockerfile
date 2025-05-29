@@ -7,13 +7,14 @@ WORKDIR /app
 # Copy package files for dependency installation
 COPY package*.json ./
 
+RUN npm install -g pnpm
 # Install dependencies
-RUN npm ci
+RUN pnpm install
 
 # Copy TypeScript configuration and source code
 COPY tsconfig.json ./
 
-COPY bot.ts bot.ts
+COPY . .
 
 # Build TypeScript to JavaScript
 RUN npm run build
