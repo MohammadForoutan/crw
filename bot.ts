@@ -7,6 +7,7 @@ import path from "path";
 import { IDP, Result, Observer } from "./Idp";
 import { Irsafam } from "./Irsafam";
 import { ADD } from "./ADD";
+import { IELTS_TEHRAN } from "./IeltsTehran";
 
 // Load environment variables
 config();
@@ -14,10 +15,9 @@ config();
 // Configuration
 const TELEGRAM_BOT_TOKEN: string = process.env.TELEGRAM_BOT_TOKEN || "";
 const BOT_OWNER_CHAT_ID: string = process.env.BOT_OWNER_CHAT_ID || "";
-const TELEGRAM_CHAT_IDS: string[] = JSON.parse(
-  process.env.TELEGRAM_CHAT_IDS || "[]"
-).concat(BOT_OWNER_CHAT_ID);
-
+const TELEGRAM_CHAT_IDS: string[] = (process.env.TELEGRAM_CHAT_IDS || "").split(
+  ","
+);
 // Interface for scraped data
 interface ExamEntry {
   status: string;
@@ -98,7 +98,12 @@ async function getStats(
 
 // 5-minute scheduled task
 async function scheduledTask(): Promise<void> {
-  const observers: Observer[] = [new IDP(), new Irsafam(), new ADD()];
+  const observers: Observer[] = [
+    new IDP(),
+    new Irsafam(),
+    new ADD(),
+    new IELTS_TEHRAN(),
+  ];
   logger.info("Running 5-minute scheduled task");
   try {
     const promises = observers.map((ob) => ob.doYourThing());

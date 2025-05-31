@@ -1,4 +1,3 @@
-
 export type Result = {
   found: boolean;
   hasError: boolean;
@@ -33,7 +32,8 @@ interface ResponseData {
 }
 export class IDP implements Observer {
   constructor() {}
-  notIntrestedkeywords = ["IRSAFAM", "ADD"];
+  notIntrestedkeywords = ["IRSAFAM", "ADD", "IELTS TEHRAN"];
+  // notIntrestedkeywords = [];
   async doYourThing(): Promise<Result> {
     try {
       const response = await fetch(
