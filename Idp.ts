@@ -3,6 +3,7 @@ export type Result = {
   hasError: boolean;
   site: string;
   data: any;
+  link: string;
 };
 export interface Observer {
   doYourThing(): Promise<Result>;
@@ -32,8 +33,8 @@ interface ResponseData {
 }
 export class IDP implements Observer {
   constructor() {}
-  notIntrestedkeywords = ["IRSAFAM", "ADD", "IELTS TEHRAN"];
-  // notIntrestedkeywords = [];
+  // notIntrestedkeywords = ["IRSAFAM", "ADD", "IELTS TEHRAN"];
+  notIntrestedkeywords = ["IRSAFAM"];
   async doYourThing(): Promise<Result> {
     try {
       const response = await fetch(
@@ -62,8 +63,11 @@ export class IDP implements Observer {
       const responseData = (await response.json()) as ResponseData; // const $ = cheerio.load(response);
       const tests = responseData.sessions.filter((session) => {
         const location = session.TestCentreLocation?.toLowerCase() || "";
-        return !this.notIntrestedkeywords.some((keyword) =>
-          location.includes(keyword.toLowerCase())
+        // Test Room
+        return (
+          !this.notIntrestedkeywords.some((keyword) =>
+            location.includes(keyword.toLowerCase())
+          ) && !location.includes("test room")
         );
       });
 
@@ -73,6 +77,7 @@ export class IDP implements Observer {
           site: "IDP",
           hasError: false,
           data: "No available test sessions found for Tehran center.",
+          link: "",
         };
       }
 
@@ -108,6 +113,7 @@ export class IDP implements Observer {
         site: `IDP`,
         data: message,
         hasError: false,
+        link: "IDP [NOT TRUSTED]",
       };
     } catch (error) {
       console.error("Error in IDP doYourThing:", error);
@@ -116,6 +122,7 @@ export class IDP implements Observer {
         site: "IDP",
         hasError: true,
         data: `An error occurred while fetching data from IDP: ${error}`,
+        link: "",
       };
     }
   }

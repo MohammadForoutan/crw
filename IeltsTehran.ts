@@ -85,6 +85,7 @@ export class IELTS_TEHRAN implements Observer {
           site: "IELTS_TEHRAN",
           data: message2,
           found: false,
+          link: "",
         };
       }
 
@@ -105,6 +106,7 @@ export class IELTS_TEHRAN implements Observer {
           site: "IELTS_TEHRAN",
           data: tests,
           hasError: false,
+          link: "https://ieltstehran.com/computer-delivered-ielts-exam/",
         };
       }
 
@@ -113,6 +115,7 @@ export class IELTS_TEHRAN implements Observer {
         hasError: false,
         site: "IELTS_TEHRAN",
         data: "No test found",
+        link: "",
       };
     } catch (error) {
       console.error("Error fetching IELTS_TEHRAN data:", error);
@@ -121,6 +124,7 @@ export class IELTS_TEHRAN implements Observer {
         hasError: true,
         site: "IELTS_TEHRAN",
         data: `An error occurred while fetching data from IELTS_TEHRAN: ${error}`,
+        link: "",
       };
     }
   }
@@ -131,7 +135,7 @@ export class IELTS_TEHRAN implements Observer {
     const url = ITELS_TEHRAN_URL.replace("{page}", page.toString());
 
     try {
-      const response = await axios.get(url, { timeout: 10000 });
+      const response = await axios.get(url, { timeout: 20000 });
       if (response.status === 200) {
         const jsonData = response.data;
 

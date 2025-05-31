@@ -82,6 +82,7 @@ export class ADD implements Observer {
           site: "ADD",
           data: message2,
           found: false,
+          link: "",
         };
       }
 
@@ -102,6 +103,7 @@ export class ADD implements Observer {
           site: "ADD",
           data: tests,
           hasError: false,
+          link: "https://www.ieltsadd.ir/test?originalType=1%2C3&type=&month=",
         };
       }
 
@@ -110,6 +112,7 @@ export class ADD implements Observer {
         hasError: false,
         site: "ADD",
         data: "No test found",
+        link: "",
       };
     } catch (error) {
       console.error("Error fetching ADD data:", error);
@@ -118,6 +121,7 @@ export class ADD implements Observer {
         hasError: true,
         site: "ADD",
         data: `An error occurred while fetching data from ADD: ${error}`,
+        link: "https://www.ieltsadd.ir/test?originalType=1%2C3&type=&month=",
       };
     }
   }
@@ -127,7 +131,7 @@ export class ADD implements Observer {
     const incompleteData: ExamEntry[] = [];
     const url = `https://www.ieltsadd.ir/test?originalType=1%2C3&type=1%2C5&province=%D8%AA%D9%87%D8%B1%D8%A7%D9%86&typeMaterial=%DA%A9%D8%A7%D9%85%D9%BE%DB%8C%D9%88%D8%AA%D8%B1%DB%8C&page=${page}`;
     try {
-      const response = await axios.get(url, { timeout: 10000 });
+      const response = await axios.get(url, { timeout: 20000 });
       if (response.status === 200) {
         const $ = load(response.data);
         const table = $(

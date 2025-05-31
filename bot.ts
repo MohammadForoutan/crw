@@ -66,7 +66,9 @@ async function sendTelegramMessage(
       try {
         // Split message into chunks to respect Telegram's 4096-character limit
         for (let i = 0; i < message.length; i += 4096) {
-          await bot.api.sendMessage(chatId, message.slice(i, i + 4096));
+          await bot.api.sendMessage(chatId, message.slice(i, i + 4096), {
+            parse_mode: "HTML",
+          });
         }
         logger.info(`Sent Telegram message to ${chatId}`);
       } catch (error) {
@@ -114,16 +116,38 @@ async function scheduledTask(): Promise<void> {
     if (results.some((result) => result.found)) {
       try {
         await sendTelegramMessage(
-          "✅  Found:" +
+          "✅  Found: \n\n" +
             results
               .filter((result) => result.found)
-              .map((result) => result.data)
+              .map(
+                (result) =>
+                  result.data +
+                  "\n 🔗️ Link:" +
+                  `${result.site} : ${result.link}`
+              )
               .join("\n") +
             "\n\n" +
             results
               .filter((result) => result.found)
-              .map((result) => result.site + "\n")
+              .map(
+                (result) => `🔍 ${result.site}: ${result.found ? "✅" : ""}\n`
+              )
         );
+      } catch (error) {
+        logger.error(
+          `Error sending found message: ${(error as Error).message}`
+        );
+        incompleteDataHistory.push(true);
+      }
+    }
+
+    if (
+      !results.some((result) => result.found) &&
+      !results.some((result) => result.hasError)
+    ) {
+      const message = "❌️ Not Found";
+      try {
+        await sendTelegramMessage(message);
       } catch (error) {
         logger.error(
           `Error sending found message: ${(error as Error).message}`
