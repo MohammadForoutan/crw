@@ -215,7 +215,6 @@ async function main(): Promise<void> {
 
   // Schedule tasks
   cron.schedule("*/5 * * * *", scheduledTask); // Every 5 minutes
-  cron.schedule("0 * * * *", hourlyTask); // Every hour
 
   // Start bot
   await bot.start();
