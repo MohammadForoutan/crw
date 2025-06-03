@@ -34,7 +34,7 @@ interface ResponseData {
 export class IDP implements Observer {
   constructor() {}
   // notIntrestedkeywords = ["IRSAFAM", "ADD", "IELTS TEHRAN"];
-  notIntrestedkeywords = ["IRSAFAM"];
+  notIntrestedkeywords = ["IRSAFAM", "ADD"];
   async doYourThing(): Promise<Result> {
     try {
       const response = await fetch(
@@ -64,11 +64,10 @@ export class IDP implements Observer {
       const tests = responseData.sessions.filter((session) => {
         const location = session.TestCentreLocation?.toLowerCase() || "";
         // Test Room
-        return (
-          !this.notIntrestedkeywords.some((keyword) =>
-            location.includes(keyword.toLowerCase())
-          ) && !location.includes("test room")
+        return !this.notIntrestedkeywords.some((keyword) =>
+          location.includes(keyword.toLowerCase())
         );
+        // ) && !location.includes("test room")
       });
 
       if (tests.length === 0) {

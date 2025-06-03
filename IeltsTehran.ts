@@ -47,7 +47,7 @@ export class IELTS_TEHRAN implements Observer {
       const completedData: ExamEntry[] = [];
       const incompleteData: ExamEntry[] = [];
 
-      const PAGE_RANGE_END = 3;
+      const PAGE_RANGE_END = 6;
       const pages = Array.from({ length: PAGE_RANGE_END - 1 }, (_, i) => i + 1);
       let requestCount = 0;
 
@@ -103,7 +103,7 @@ export class IELTS_TEHRAN implements Observer {
 
         return {
           found: true,
-          site: "IELTS_TEHRAN",
+          site: "IELTS_TEHRAN در سایت خود",
           data: tests,
           hasError: false,
           link: "https://ieltstehran.com/computer-delivered-ielts-exam/",
